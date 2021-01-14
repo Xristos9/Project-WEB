@@ -27,9 +27,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])){
         //hashing the password
         //$pass = md5($pass);
         
-        $sql = "SELECT * FROM person WHERE userName='$uname' AND password='$pass' "; 
-       
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn, "SELECT * FROM person WHERE userName='$uname' AND password='$pass' ");
 
         if(mysqli_num_rows($result) === 1) {
             $row = mysqli_fetch_assoc($result);
