@@ -1,11 +1,12 @@
 <?php
     include "db_conn.php";
-	
+    session_start();
+	$u=$_SESSION["userID"];
 	$k = json_decode($_POST["kati"], true);
 	
 	$a = (array_shift($k));
 
-	$sql = mysqli_query($conn,"INSERT INTO `ips` (`userID`,`IP`,`lan`,`lon`,`ISP`) VALUES ('1','".$a['ip']."', '".$a['lat']."','".$a['lon']."','".$a['par']."');");
+	$sql = mysqli_query($conn,"INSERT INTO `ips` (`userID`,`IP`,`lan`,`lon`,`ISP`) VALUES ('$u','".$a['ip']."', '".$a['lat']."','".$a['lon']."','".$a['par']."');");
 	
 	$result = mysqli_query($conn,"SELECT MAX(`entryID`) FROM `ips`"); 
 	while($row = mysqli_fetch_array($result))
@@ -26,4 +27,3 @@
 	//   }
 
 ?>
-	
