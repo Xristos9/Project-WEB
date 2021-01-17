@@ -1,42 +1,74 @@
 <?php
-	include "db_conn.php";
+session_start();
 
-	session_start();
-	$userID=$_SESSION["userID"];
+if(isset($_SESSION['userID']) && isset($_SESSION['userName'])){
+?>
 
-    $result = mysqli_query($conn,"SELECT serverIPAddress FROM hardata INNER JOIN ips ON hardata.entryID = ips.entryID WHERE `ips`.`userID`=$userID AND (RsContentType like '%html%' OR RsContentType like '%javascript%' OR RsContentType like '%php%' OR RqContentType like '%html%' OR RqContentType like '%javascript%' OR RqContentType like '%php%') ORDER BY `hardata`.`serverIPAddress` ASC");
-	$servers= array();
-	if ($result->num_rows > 0) {
-		// output data of each row
-		while($row = $result->fetch_assoc()) {
-			array_push($servers,$row['serverIPAddress']);
-		}
-	}
-	// print_r($userID);
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
 	
-	$result2 = mysqli_query($conn,"SELECT Date FROM ips WHERE `userID`=$userID ORDER BY `ips`.`Date` ASC");
-
-	$dates= array();
-	if ($result2->num_rows > 0) {
-		// output data of each row
-		while($row = $result2->fetch_assoc()) {
-			array_push($dates,$row['Date']);
-		}
-	}
-	$_SESSION["uDate"]=end($dates);
-	// print_r($_SESSION["uDate"]);
-
-
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	$result3 = mysqli_query($conn,"SELECT entryID FROM `ips` WHERE `userID`=$userID");
-	$entries= array();
-	if ($result3->num_rows > 0) {
-		// output data of each row
-		while($row = $result3->fetch_assoc()) {
-			array_push($entries,$row['entryID']);
-		}
-	}
-	$_SESSION["nOfEntries"]=(count($entries));
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Sympols -->
 
+		<title>Home </title>
 	
+		<link rel="stylesheet" type="text/css" href="style_user.css"> 
+	</head>
+	
+	<body>
+	
+
+	<?php
+		include "header.php";
+	?>
+
+
+
+		 <h1>Hello, <?php echo $_SESSION['userName']; ?></h1>
+
+		<nav class="user-nav">
+			<a href="change-password.php">Change Password</a>
+			<a href="change-username.php">Change Username</a> 
+			<a href="logout.php">Logout</a>
+		</nav>
+
+		<br>
+		<br>
+		<br>
+		<?php
+		print_r($_SESSION["uDate"]);
+		?>
+
+		<br>
+		<br>
+		<?php
+		print_r($_SESSION["nOfEntries"]);
+		?>
+		<!-- page wrapper -->
+		<div class="page-wrapper">
+			
+		</div>
+		<!-- /page wrapper -->
+
+		<!-- page footer -->
+	<?php
+		include "footer.php";
+	?>
+	<!-- /page footer -->
+
+	</body>
+
+
+
+</html>
+
+<?php
+} else{
+	header("Location: index.php");
+	exit();
+}
 ?>
